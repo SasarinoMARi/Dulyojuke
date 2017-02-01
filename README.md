@@ -4,8 +4,6 @@
 
 ### [Download](https://github.com/Usagination/Dulyojuke/releases/tag/alpha)
 
-현재 일부 영상을 다운받지 못하는 현상 확인(드뭅니다) 
-
 ## Usagi
 
 1. 저장 경로와 유튜브 주소를 복사합니다.
@@ -16,7 +14,8 @@
  
 ## Milestone
 
-전반적인 ui 작업 > 니코동 지원
+전반적인 ui 작업 > 니코동 지원 >  간단한 음원 수정
+
 
 ## libraries
 
@@ -27,11 +26,13 @@
 [MediaToolkit](https://github.com/AydinAdn/MediaToolkit)
 
 
-## licences
+## Licences
 
-잘 몰라요 누가 써주세요
+(MIT license)[https://opensource.org/licenses/MIT]
+(LGPLv2.1 license)[http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html]
+(GPLv2e license)[https://opensource.org/licenses/gpl-2.0]
 
 
-## special thx
+## Special thx
 
 프로그램 이름 뭐로할까 고민하고있는데 [허브](https://twitter.com/hub1257)가 정해줌
