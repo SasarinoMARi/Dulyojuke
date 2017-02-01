@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using YoutubeExtractor;
 
 namespace dulyojuke
@@ -49,7 +47,7 @@ namespace dulyojuke
 				DownloadUrlResolver.DecryptDownloadUrl( video );
 			}
 
-			var outputFilename = Path.Combine(downloadPath, MakeValidFileName( video.Title) + video.VideoExtension);
+			var outputFilename = Path.Combine(downloadPath, Utility.MakeValidFileName( video.Title) + video.VideoExtension);
 			var videoDownloader = new YoutubeExtractor.VideoDownloader( video,outputFilename );
 
 			videoDownloader.DownloadProgressChanged += ( sender, args ) => Console.WriteLine( args.ProgressPercentage );
@@ -58,17 +56,5 @@ namespace dulyojuke
 			return outputFilename;
 		}
 
-		/// <summary>
-		/// 유효한 파일 이름을 반환합니다.
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		private static string MakeValidFileName( string name )
-		{
-			string invalidChars = System.Text.RegularExpressions.Regex.Escape( new string( System.IO.Path.GetInvalidFileNameChars() ) );
-			string invalidRegStr = string.Format( @"([{0}]*\.+$)|([{0}]+)", invalidChars );
-
-			return System.Text.RegularExpressions.Regex.Replace( name, invalidRegStr, "_" );
-		}
 	}
 }

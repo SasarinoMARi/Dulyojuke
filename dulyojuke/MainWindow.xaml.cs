@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
-using System.Web;
 using System.Windows;
-using MediaToolkit;
-using MediaToolkit.Model;
 using YoutubeExtractor;
 
 namespace dulyojuke
@@ -48,9 +42,10 @@ namespace dulyojuke
 					TagAssister.ApplyTag( audioPath, tags );
 					downloadDone++;
 				}
-				catch
+				catch(Exception exception)
 				{
 					errorCount++;
+					LogAssister.Output( exception.ToString( ) );
 				}
 				finally
 				{
