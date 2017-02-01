@@ -37,4 +37,6 @@
 
 ## Special thx
 
-프로그램 이름 뭐로할까 고민하고있는데 [허브](https://twitter.com/hub1257)가 정해줌
+프로그램 이름 뭐로할까 고민하고있는데 [허브](https://twitter.com/hub1257)가 정해줌.
+
+이쁜 아이콘은 [usami.hakana](http://www.pixiv.net/member.php?id=675934)님께서 그리셨습니다!!!
