@@ -1,60 +1,90 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using YoutubeExtractor;
+using System.Threading.Tasks;
 
 namespace dulyojuke
 {
 	class MediaDownloader
 	{
-		/// <summary>
-		/// url로부터 오디오를 얻어오는 함수. 작동 안함
-		/// </summary>
-		/// <param name="videoInfos"></param>
-		public static void DownloadAudio( IEnumerable<VideoInfo> videoInfos )
+		public class Exceptions
 		{
-			VideoInfo video = videoInfos
-				.Where(info => info.CanExtractAudio)
-				.OrderByDescending(info => info.AudioBitrate)
-				.First();
-
-			if ( video.RequiresDecryption )
-			{
-				DownloadUrlResolver.DecryptDownloadUrl( video );
-			}
-
-			var audioDownloader = new AudioDownloader(video, Path.Combine("D:/Downloads", video.Title + video.AudioExtension));
-
-			audioDownloader.DownloadProgressChanged += ( s, args ) => Console.WriteLine( args.ProgressPercentage * 0.85 );
-			audioDownloader.AudioExtractionProgressChanged += ( s, args ) => Console.WriteLine( 85 + args.ProgressPercentage * 0.15 );
-
-			audioDownloader.Execute( );
+			public class YoutubeDLException : Exception { }
+			public class NotFoundOutputFileException : Exception { }
 		}
 
-		/// <summary>
-		/// url로부터 영상을 얻어오는 함수.
-		/// </summary>
-		/// <param name="videoInfos"></param>
-		/// <returns>다운로드받은 영상 디렉터리</returns>
-		public static string DownloadVideo( IEnumerable<VideoInfo> videoInfos, string downloadPath )
+		private static void GetYoutueVideo( string url, string dir, Action<string> callback )
 		{
-			// 영상 포맷들 중 해상도가 0인 영상을 받아온다.
-			VideoInfo video = videoInfos.First(info => info.VideoType == VideoType.Mp4 && info.Resolution == 0);
+			var videoName = Path.Combine(dir, GetTitle(url));
 
-			if ( video.RequiresDecryption )
-			{
-				DownloadUrlResolver.DecryptDownloadUrl( video );
-			}
+			Process downloader = new Process();
+			downloader.StartInfo.FileName = "youtube-dl.exe";
+			downloader.StartInfo.Arguments = string.Format( "-f bestaudio/worstvideo {0} -o \"{1}\"", url, videoName );
+			downloader.StartInfo.RedirectStandardOutput = true;
+			downloader.StartInfo.UseShellExecute = false;
+			downloader.StartInfo.CreateNoWindow = true;
+			downloader.EnableRaisingEvents = true;
 
-			var outputFilename = Path.Combine(downloadPath, Utility.MakeValidFileName( video.Title) + video.VideoExtension);
-			var videoDownloader = new YoutubeExtractor.VideoDownloader( video,outputFilename );
+			downloader.Start( );
+			downloader.WaitForExit( );
 
-			videoDownloader.DownloadProgressChanged += ( sender, args ) => Console.WriteLine( args.ProgressPercentage );
-			videoDownloader.Execute( );
+			if ( downloader.ExitCode != 0 ) throw new Exceptions.YoutubeDLException( );
 
-			return outputFilename;
+			callback( videoName );
 		}
 
+		private static void GetNicoVideo( string url, string dir, Action<string> callback, string username, string password )
+		{
+			var account = string.Format("-u \"{0}\" -p \"{1}\"", username, password);
+			var videoName = Path.Combine(dir, GetTitle(url, account));
+
+			Process downloader = new Process();
+			downloader.StartInfo.FileName = "youtube-dl.exe";
+			downloader.StartInfo.Arguments = string.Format( "{0} -o \"{1}\" {2}", url, videoName, account );
+			//downloader.StartInfo.RedirectStandardOutput = true;
+			//downloader.StartInfo.UseShellExecute = false;
+			//downloader.StartInfo.CreateNoWindow = true;
+			downloader.EnableRaisingEvents = true;
+
+			downloader.Start( );
+			downloader.WaitForExit( );
+
+			if ( downloader.ExitCode != 0 ) throw new Exceptions.YoutubeDLException( );
+
+			callback( videoName );
+		}
+
+		private static string GetTitle( string url, string option = "" )
+		{
+			Process downloader = new Process();
+			downloader.StartInfo.FileName = "youtube-dl.exe";
+			downloader.StartInfo.Arguments = string.Format( "-e {0} {1}", url, option );
+			downloader.StartInfo.RedirectStandardOutput = true;
+			downloader.StartInfo.UseShellExecute = false;
+			downloader.StartInfo.CreateNoWindow = true;
+			downloader.EnableRaisingEvents = true;
+
+			downloader.Start( );
+			downloader.WaitForExit( );
+
+			if ( downloader.ExitCode != 0 ) throw new Exceptions.YoutubeDLException( );
+
+			var output = downloader.StandardOutput.ReadToEnd();
+			return Utility.MakeValidFileName(output.Trim( ));
+		}
+
+		internal static void DownloadVideo( string downloadUrl, string downlaodPath, Action<string> callback )
+		{
+			if ( downloadUrl.Contains( "youtube.com" ) )
+			{
+				GetYoutueVideo( downloadUrl, downlaodPath, callback );
+			}
+			else if ( downloadUrl.Contains( "nicovideo.jp" ) )
+			{
+				GetNicoVideo( downloadUrl, downlaodPath, callback, SharedPreference.Instance.NicoVideoUsername, SharedPreference.Instance.NicoVideoPassword );
+			}
+		}
 	}
 }

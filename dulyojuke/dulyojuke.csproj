@@ -39,6 +39,10 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="INIFileParser, Version=2.3.0.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
+      <HintPath>..\packages\ini-parser.2.3.0\lib\net20\INIFileParser.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MediaToolkit, Version=1.1.0.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MediaToolkit.1.1.0.1\lib\net40\MediaToolkit.dll</HintPath>
       <Private>True</Private>
@@ -72,6 +76,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="LogAssister.cs" />
+    <Compile Include="SharedPreference.cs" />
     <Compile Include="TagAssister.cs" />
     <Compile Include="TagNode.cs" />
     <Compile Include="MediaConverter.cs" />
@@ -122,10 +127,9 @@
     <Resource Include="icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\YoutubeExtractor\YoutubeExtractor.csproj">
-      <Project>{ecdc127f-8def-4f99-8300-72c13597339d}</Project>
-      <Name>YoutubeExtractor</Name>
-    </ProjectReference>
+    <Content Include="youtube-dl.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

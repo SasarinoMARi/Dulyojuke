@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
-using YoutubeExtractor;
 
 namespace dulyojuke
 {
@@ -20,7 +19,7 @@ namespace dulyojuke
 		{
 			InitializeComponent( );
 			TagAssister.Initialize( );
-			textbox_downloadpath.Text = GetDefaultDownloadFolder( );
+			textbox_downloadpath.Text = SharedPreference.Instance.DownloadPath;
 			UpdateCounts( );
 		}
 
@@ -36,13 +35,14 @@ namespace dulyojuke
 			{
 				try
 				{
-					IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(downloadUrl);
-					var videoPath = MediaDownloader.DownloadVideo( videoInfos, downlaodPath );
-					var audioPath = MediaConverter.ConvertVideo( videoPath );
-					TagAssister.ApplyTag( audioPath, tags );
-					downloadDone++;
+					MediaDownloader.DownloadVideo( downloadUrl, downlaodPath, delegate ( string videoPath )
+					{
+						var audioPath = MediaConverter.ConvertVideo( videoPath );
+						TagAssister.ApplyTag( audioPath, tags );
+						downloadDone++;
+					} );
 				}
-				catch(Exception exception)
+				catch ( Exception exception )
 				{
 					errorCount++;
 					LogAssister.Output( exception.ToString( ) );
@@ -108,25 +108,10 @@ namespace dulyojuke
 			return url;
 		}
 
-		/// <summary>
-		/// 기본 다운로드 폴더 경로를 얻어옵니다.
-		/// </summary>
-		/// <returns></returns>
-		private string GetDefaultDownloadFolder( )
+		private void Window_Closing( object sender, System.ComponentModel.CancelEventArgs e )
 		{
-			string downloads;
-			SHGetKnownFolderPath( KnownFolder.Downloads, 0, IntPtr.Zero, out downloads );
-			return downloads;
+			SharedPreference.Instance.DownloadPath = textbox_downloadpath.Text;
+			SharedPreference.Instance.Save( );
 		}
-
-		#region native funcs
-		public static class KnownFolder
-		{
-			public static readonly Guid Downloads = new Guid("374DE290-123F-4565-9164-39C4925E467B");
-		}
-		[DllImport( "shell32.dll", CharSet = CharSet.Unicode )]
-		static extern int SHGetKnownFolderPath( [MarshalAs( UnmanagedType.LPStruct )] Guid rfid, uint dwFlags, IntPtr hToken, out string pszPath );
-		#endregion
-
 	}
 }
