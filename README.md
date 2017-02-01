@@ -2,7 +2,7 @@
 
 유튜브에서 mp3를 내려받고 태깅까지 팍팍팍 해줍니다. 스펠링에 대해선 얘기하지 맙시다. 예.. 저 영어 못해요 ㅠ
 
-### [Download](https://github.com/Usagination/Dulyojuke/files/742861/Release.zip)
+### [Download](https://github.com/Usagination/Dulyojuke/releases/tag/alpha)
 
 현재 일부 영상을 다운받지 못하는 현상 확인(드뭅니다) 
 
