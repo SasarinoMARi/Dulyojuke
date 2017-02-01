@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dulyojuke"
         mc:Ignorable="d"
-        Title="들려줄게" Height="269.688" Width="535.906">
+        ResizeMode="NoResize"
+        Title="들려줄게" Height="273.647" Width="534.038">
     <Grid>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" VerticalAlignment="Top">
             <Label x:Name="label6" Content="저장 경로 :" />

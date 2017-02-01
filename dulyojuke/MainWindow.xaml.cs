@@ -28,7 +28,7 @@ namespace dulyojuke
 		{
 			downloadCount++;
 
-			var downloadUrl = GetDownloadUrl();
+			var downloadUrl = GetDownloadUrl().Trim();
 			var downlaodPath = GetDownloadPath();
 			var tags = GetTagInfos();
 
