@@ -28,9 +28,11 @@
 
 ## Licences
 
-(MIT license)[https://opensource.org/licenses/MIT]
-(LGPLv2.1 license)[http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html]
-(GPLv2e license)[https://opensource.org/licenses/gpl-2.0]
+[MIT license](https://opensource.org/licenses/MIT)
+
+[LGPLv2.1 license](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html)
+
+[GPLv2e license](https://opensource.org/licenses/gpl-2.0)
 
 
 ## Special thx
