@@ -42,10 +42,17 @@ namespace dulyojuke
 						Bitmap bitmap = null;
 						if ( picture.StartsWith( "http://" ) || picture.StartsWith( "https://" ) )
 						{
-							System.Net.WebRequest request = System.Net.WebRequest.Create(picture);
-							System.Net.WebResponse response = request.GetResponse();
-							Stream responseStream = response.GetResponseStream();
-							bitmap = new Bitmap( responseStream );
+							try
+							{
+								System.Net.WebRequest request = System.Net.WebRequest.Create(picture);
+								System.Net.WebResponse response = request.GetResponse();
+								Stream responseStream = response.GetResponseStream();
+								bitmap = new Bitmap(responseStream);
+							}
+							catch
+							{
+								continue;
+							}
 						}
 						else
 						{

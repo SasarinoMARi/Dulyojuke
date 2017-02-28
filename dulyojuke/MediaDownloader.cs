@@ -21,7 +21,7 @@ namespace dulyojuke
 
 			Process downloader = new Process();
 			downloader.StartInfo.FileName = "youtube-dl.exe";
-			downloader.StartInfo.Arguments = string.Format( "-f bestaudio/worstvideo {0} -o \"{1}\"", url, videoName );
+			downloader.StartInfo.Arguments = string.Format("-f bestaudio/worstvideo \"{0}\" -o \"{1}\" --no-playlist", url, videoName );
 			downloader.StartInfo.RedirectStandardOutput = true;
 			downloader.StartInfo.UseShellExecute = false;
 			downloader.StartInfo.CreateNoWindow = true;
@@ -30,7 +30,7 @@ namespace dulyojuke
 			downloader.Start( );
 			downloader.WaitForExit( );
 
-			if ( downloader.ExitCode != 0 ) throw new Exceptions.YoutubeDLException( );
+			//if ( downloader.ExitCode != 0 ) throw new Exceptions.YoutubeDLException( );
 
 			callback( videoName );
 		}
@@ -51,7 +51,7 @@ namespace dulyojuke
 			downloader.Start( );
 			downloader.WaitForExit( );
 
-			if ( downloader.ExitCode != 0 ) throw new Exceptions.YoutubeDLException( );
+			//if ( downloader.ExitCode != 0 ) throw new Exceptions.YoutubeDLException( );
 
 			callback( videoName );
 		}
@@ -60,7 +60,7 @@ namespace dulyojuke
 		{
 			Process downloader = new Process();
 			downloader.StartInfo.FileName = "youtube-dl.exe";
-			downloader.StartInfo.Arguments = string.Format( "-e {0} {1}", url, option );
+			downloader.StartInfo.Arguments = string.Format("-e {0} \"{1}\" --no-playlist", url, option );
 			downloader.StartInfo.RedirectStandardOutput = true;
 			downloader.StartInfo.UseShellExecute = false;
 			downloader.StartInfo.CreateNoWindow = true;
@@ -69,7 +69,7 @@ namespace dulyojuke
 			downloader.Start( );
 			downloader.WaitForExit( );
 
-			if ( downloader.ExitCode != 0 ) throw new Exceptions.YoutubeDLException( );
+			//if ( downloader.ExitCode != 0 ) throw new Exceptions.YoutubeDLException( );
 
 			var output = downloader.StandardOutput.ReadToEnd();
 			return Utility.MakeValidFileName(output.Trim( ));
