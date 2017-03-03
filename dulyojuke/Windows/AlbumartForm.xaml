@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="dulyojuke.Windows.AlbumartForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dulyojuke.Windows"
+        mc:Ignorable="d" Height="300" Width="550">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Colors.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid Margin="0,0,0,50">
+            <Grid Margin="50, 50,50,50">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="Button_Albumart_FromImage" Content="이미지" Margin="0, 0, 0, 0" Grid.Column="0" Click="Button_Albumart_FromImage_Click"/>
+                <Button x:Name="Button_Albumart_FromCapture" Content="캡처" Margin="0, 0, 0, 0" Grid.Column="2" Click="Button_Albumart_FromCapture_Click"/>
+                <Button x:Name="Button_Albumart_FromWeb" Content="이미지url" Margin="0, 0, 0, 0" Grid.Column="4" Click="Button_Albumart_FromWeb_Click"/>
+                <Button x:Name="Button_Albumart_FromThumbnail" Content="영상 섬네일" Margin="0, 0, 0, 0" Grid.Column="6" Click="Button_Albumart_FromThumbnail_Click"/>
+            </Grid>
+        </Grid>
+        <Grid Height="50" Margin="0,150,0,0" VerticalAlignment="Bottom" Background="{StaticResource DownloadBarBackground}" >
+            <Button x:Name="Button_Prev" HorizontalAlignment="Left" Content="이전으로" Width="85" Height="35" Margin="20, 0, 0, 0"/>
+            <Button x:Name="Button_Next" HorizontalAlignment="Right" Content="다음으로" Width="85" Height="35" Margin="0, 0, 20, 0"/>
+        </Grid>
+    </Grid>
+</UserControl>

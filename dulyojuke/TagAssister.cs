@@ -29,45 +29,22 @@ namespace dulyojuke
 				tag.Artists = node.Artists;
 				tag.Album = node.Album;
 
-				if ( node.AlbumArt != null )
+				var pictures = new List<TagLib.Picture>();
+				foreach ( var picture in node.AlbumArt )
 				{
-					var pictures = new List<TagLib.Picture>();
-					foreach ( var picture in node.AlbumArt )
-					{
-						TagLib.Picture pic = new TagLib.Picture();
-						pic.Type = TagLib.PictureType.FrontCover;
-						pic.Description = "Cover";
-						pic.MimeType = System.Net.Mime.MediaTypeNames.Image.Jpeg;
-						MemoryStream ms = new MemoryStream();
-						Bitmap bitmap = null;
-						if ( picture.StartsWith( "http://" ) || picture.StartsWith( "https://" ) )
-						{
-							try
-							{
-								System.Net.WebRequest request = System.Net.WebRequest.Create(picture);
-								System.Net.WebResponse response = request.GetResponse();
-								Stream responseStream = response.GetResponseStream();
-								bitmap = new Bitmap(responseStream);
-							}
-							catch
-							{
-								continue;
-							}
-						}
-						else
-						{
-							if ( File.Exists( picture ) )
-							{
-								bitmap = new Bitmap( picture );
-							}
-						}
-						if ( bitmap == null ) continue;
-						bitmap.Save( ms, System.Drawing.Imaging.ImageFormat.Jpeg );
-						ms.Position = 0;
-						pic.Data = TagLib.ByteVector.FromStream( ms );
-
-						pictures.Add( pic );
-					}
+					if ( picture == null ) continue;
+					TagLib.Picture pic = new TagLib.Picture();
+					pic.Type = TagLib.PictureType.FrontCover;
+					pic.Description = "Cover";
+					pic.MimeType = System.Net.Mime.MediaTypeNames.Image.Jpeg;
+					MemoryStream ms = new MemoryStream();
+					picture.Save( ms, System.Drawing.Imaging.ImageFormat.Jpeg );
+					ms.Position = 0;
+					pic.Data = TagLib.ByteVector.FromStream( ms );
+					pictures.Add( pic );
+				}
+				if(pictures.Count > 0)
+				{
 					tag.Pictures = pictures.ToArray( );
 				}
 

@@ -43,9 +43,9 @@ namespace dulyojuke
 			Process downloader = new Process();
 			downloader.StartInfo.FileName = "youtube-dl.exe";
 			downloader.StartInfo.Arguments = string.Format( "{0} -o \"{1}\" {2}", url, videoName, account );
-			//downloader.StartInfo.RedirectStandardOutput = true;
-			//downloader.StartInfo.UseShellExecute = false;
-			//downloader.StartInfo.CreateNoWindow = true;
+			downloader.StartInfo.RedirectStandardOutput = true;
+			downloader.StartInfo.UseShellExecute = false;
+			downloader.StartInfo.CreateNoWindow = true;
 			downloader.EnableRaisingEvents = true;
 
 			downloader.Start( );
@@ -77,11 +77,11 @@ namespace dulyojuke
 
 		internal static void DownloadVideo( string downloadUrl, string downlaodPath, Action<string> callback )
 		{
-			if ( downloadUrl.Contains( "youtube.com" ) )
+			if ( downloadUrl.StartsWith( "https://www.youtube.com" ) || downloadUrl.StartsWith( "https://youtu.be" ) )
 			{
 				GetYoutueVideo( downloadUrl, downlaodPath, callback );
 			}
-			else if ( downloadUrl.Contains( "nicovideo.jp" ) )
+			else if ( downloadUrl.Contains( "http://www.nicovideo.jp" ) )
 			{
 				GetNicoVideo( downloadUrl, downlaodPath, callback, SharedPreference.Instance.NicoVideoUsername, SharedPreference.Instance.NicoVideoPassword );
 			}

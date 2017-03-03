@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace dulyojuke
@@ -28,6 +30,21 @@ namespace dulyojuke
 			string downloads;
 			SHGetKnownFolderPath( KnownFolder.Downloads, 0, IntPtr.Zero, out downloads );
 			return downloads;
+		}
+
+		public static string SerializeImageToString(Image image)
+		{
+			MemoryStream ms = new MemoryStream();
+			image.Save( ms, image.RawFormat );
+			byte[] array = ms.ToArray();
+			return Convert.ToBase64String( array );
+		}
+
+		public static Image DeserializeImageToString(string imageString )
+		{
+			byte[] array = Convert.FromBase64String(imageString);
+			Image image = Image.FromStream(new MemoryStream(array));
+			return image;
 		}
 
 		#region native funcs

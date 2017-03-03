@@ -1,0 +1,42 @@
+﻿<UserControl x:Class="dulyojuke.Windows.TagForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:dulyojuke"
+        mc:Ignorable="d" Height="300" Width="550">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Colors.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid Margin="0,0,0,50">
+            <Grid Margin="50, 30, 50, 30">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label FontSize="16" Height="30" Content="제목" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Left" Margin="10"/>
+                <Label FontSize="16" Height="30" Content="아티스트" Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Left" Margin="10"/>
+                <Label FontSize="16" Height="30" Content="앨범명" Grid.Row="2" Grid.Column="0"  HorizontalAlignment="Left" Margin="10"/>
+
+                <TextBox x:Name="Textbox_Tag_Title" FontSize="16" Height="30" Grid.Row="0" Grid.Column="1" Margin="10"/>
+                <TextBox x:Name="Textbox_Tag_Artist" FontSize="16" Height="30" Grid.Row="1" Grid.Column="1" Margin="10"/>
+                <TextBox x:Name="Textbox_Tag_AlbumName" FontSize="16" Height="30" Grid.Row="2" Grid.Column="1" Margin="10" />
+            </Grid>
+        </Grid>
+        <Grid Height="50" Margin="0,150,0,0" VerticalAlignment="Bottom" Background="{StaticResource DownloadBarBackground}" >
+            <Button x:Name="Button_Prev" HorizontalAlignment="Left" Content="이전으로" Width="85" Height="35" Margin="20, 0, 0, 0"/>
+            <Button x:Name="Button_Next" HorizontalAlignment="Right" Content="다음으로" Width="85" Height="35" Margin="0, 0, 20, 0"/>
+        </Grid>
+    </Grid>
+</UserControl>
