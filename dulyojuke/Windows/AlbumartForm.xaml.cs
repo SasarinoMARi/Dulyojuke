@@ -106,6 +106,12 @@ namespace dulyojuke.Windows
 		private void Button_Albumart_FromCapture_Click( object sender, RoutedEventArgs e )
 		{
 			var capture = CaptureAlbumArt( );
+            if (capture != null)
+			{
+				System.Windows.MessageBox.Show( "잘못된 이미지입니다" );
+				return;
+			}
+
 			var filename = "t"+DateTime.Now.Ticks;
 			capture.Save( filename);
 			AlbumArt = new Bitmap( filename );
