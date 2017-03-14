@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows;
@@ -19,11 +20,6 @@ namespace dulyojuke.Windows
 		public AlbumartForm( )
 		{
 			InitializeComponent( );
-		}
-
-		private void Button_Next_Click( object sender, RoutedEventArgs e )
-		{
-
 		}
 
 		private System.Drawing.Image OpenAlbumArt( )
@@ -70,9 +66,38 @@ namespace dulyojuke.Windows
 
 		private System.Drawing.Image GetThumbnail( )
 		{
-			return null;
-		}
+			var path = Path.Combine(Utility.GetImageTempFolder(), DateTime.Now.Ticks.ToString() );
 
+			Process downloader = new Process();
+			downloader.StartInfo.FileName = "youtube-dl.exe";
+			downloader.StartInfo.Arguments = string.Format( "\"{0}\" --write-thumbnail -o \"{1}\"", VideoUrl, path );
+			downloader.StartInfo.UseShellExecute = false;
+			downloader.StartInfo.CreateNoWindow = true;
+			downloader.EnableRaisingEvents = true;
+
+			downloader.Start( );
+			downloader.WaitForExit( );
+
+			if ( File.Exists( path ) )
+			{
+				File.Delete( path );
+
+				// 미친 소리 같지만 사실입니다.
+				if ( File.Exists( path + ".jpg" ) )
+					return new Bitmap( path + ".jpg" );
+				if ( File.Exists( path + ".png" ) )
+					return new Bitmap( path + ".png" );
+				if ( File.Exists( path + ".gif" ) )
+					return new Bitmap( path + ".gif" );
+				if ( File.Exists( path + ".jpeg" ) )
+					return new Bitmap( path + ".jpeg" );
+				else return null;
+			}
+			else
+			{
+				return null;
+			}
+		}
 
 		void PageInterface.setContentChangeEvent( SceneSwitchAdapter @event )
 		{
@@ -106,13 +131,13 @@ namespace dulyojuke.Windows
 		private void Button_Albumart_FromCapture_Click( object sender, RoutedEventArgs e )
 		{
 			var capture = CaptureAlbumArt( );
-			if ( capture != null )
+			if ( capture == null )
 			{
 				System.Windows.MessageBox.Show( "잘못된 이미지입니다" );
 				return;
 			}
 
-			var filename = "t"+DateTime.Now.Ticks;
+			var filename = Path.Combine(Utility.GetImageTempFolder(), DateTime.Now.Ticks.ToString());
 			capture.Save( filename );
 			AlbumArt = new Bitmap( filename );
 			if ( AlbumArt == null )
@@ -139,7 +164,13 @@ namespace dulyojuke.Windows
 
 		private void Button_Albumart_FromThumbnail_Click( object sender, RoutedEventArgs e )
 		{
-			System.Windows.MessageBox.Show( "아직 지원안하지롱" );
+			AlbumArt = GetThumbnail( );
+			if ( AlbumArt == null )
+			{
+				System.Windows.MessageBox.Show( "잘못된 이미지입니다" );
+				return;
+			}
+			this.Button_Next.RaiseEvent( new RoutedEventArgs( System.Windows.Controls.Button.ClickEvent ) );
 		}
 	}
 }
