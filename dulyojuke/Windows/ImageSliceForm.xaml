@@ -14,6 +14,8 @@
     </UserControl.Resources>
     <Grid>
         <Grid Margin="0,0,0,50">
+            <Image x:Name="ImageBox" Stretch="Fill"  Margin="10"/>
+            <Image x:Name="ImageCropped" Visibility="Hidden"/>
         </Grid>
         <Grid Height="50" Margin="0,150,0,0" VerticalAlignment="Bottom" Background="{StaticResource DownloadBarBackground}" >
             <Button x:Name="Button_Prev" HorizontalAlignment="Left" Content="이전으로" Width="85" Height="35" Margin="20, 0, 0, 0"/>

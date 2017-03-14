@@ -101,7 +101,7 @@ namespace dulyojuke.Windows
 
 		void PageInterface.setContentChangeEvent( SceneSwitchAdapter @event )
 		{
-			@event.AttachEventHandlers( null, Button_Next, null, null );
+			@event.AttachEventHandlers( Button_Prev, Button_Next, null, null );
 		}
 
 		void PageInterface.setData( Dictionary<string, string> data )

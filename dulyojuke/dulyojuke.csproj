@@ -39,6 +39,10 @@
     <ApplicationIcon>Resources\icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CroppingAdorner, Version=1.0.6282.31740, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\CroppingAdorner.dll</HintPath>
+    </Reference>
     <Reference Include="INIFileParser, Version=2.3.0.0, Culture=neutral, PublicKeyToken=79af7b307b65cf3c, processorArchitecture=MSIL">
       <HintPath>..\packages\ini-parser.2.3.0\lib\net20\INIFileParser.dll</HintPath>
       <Private>True</Private>
@@ -189,6 +193,7 @@
     <Resource Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CroppingAdorner.dll" />
     <Content Include="Resources\Gear.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

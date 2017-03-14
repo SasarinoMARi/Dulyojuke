@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dulyojuke.Windows"
-        ResizeMode="NoResize"
+        ResizeMode="CanResize"
         mc:Ignorable="d"
         Icon="../Resources/icon.ico"
         Title="들려줄게" Height="300" Width="550" Closing="Window_Closing">

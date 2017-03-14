@@ -45,7 +45,7 @@ namespace dulyojuke.Windows
 				new URLForm( ),
 				new TagForm( ),
 				new AlbumartForm( ),
-				// new ImageSliceForm( ),
+				new ImageSliceForm( ),
 				new DoneForm( ),
 				new SettingForm( )
 
@@ -59,6 +59,8 @@ namespace dulyojuke.Windows
 				content.setContentChangeEvent( eventAdapter );
 			}
 		}
+
+		#region Button events
 
 		/*
 		 * 뒤로가기 버튼 클릭 이벤트
@@ -93,7 +95,7 @@ namespace dulyojuke.Windows
 		private void Settingsbutton_Click( object sender, RoutedEventArgs e )
 		{
 			AttachContentData( );
-			ContentIndex = 4;
+			ContentIndex = 5;
 			this.Content = Contents[ContentIndex].Content;
 			ProvideContentData( );
 		}
@@ -110,8 +112,13 @@ namespace dulyojuke.Windows
 			ProvideContentData( );
 		}
 
+		#endregion
+
+		#region Data provider
+
 		/*
 		 *	현재 장면의 data를 MainWindow의 data에 병합
+		 *	만약 key가 겹치는 경우 새로운 value를 write한다.
 		 */
 		private void AttachContentData( )
 		{
@@ -142,7 +149,8 @@ namespace dulyojuke.Windows
 			}
 			if ( Contents[ContentIndex] is ImageSliceForm )
 			{
-
+				if ( ContentData.ContainsKey( "AlbumArt" ) )
+					data.Add( "AlbumArt", ContentData["AlbumArt"] );
 			}
 			if ( Contents[ContentIndex] is DoneForm )
 			{
@@ -164,6 +172,8 @@ namespace dulyojuke.Windows
 
 			( ( PageInterface ) Contents[ContentIndex] ).setData( data );
 		}
+
+		#endregion
 
 		private void Window_Closing( object sender, System.ComponentModel.CancelEventArgs e )
 		{

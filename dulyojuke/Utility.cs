@@ -2,6 +2,9 @@
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace dulyojuke
 {
@@ -32,7 +35,7 @@ namespace dulyojuke
 			return downloads;
 		}
 
-		public static string SerializeImageToString(Image image)
+		public static string SerializeImageToString( Image image )
 		{
 			MemoryStream ms = new MemoryStream();
 			image.Save( ms, image.RawFormat );
@@ -40,7 +43,7 @@ namespace dulyojuke
 			return Convert.ToBase64String( array );
 		}
 
-		public static Image DeserializeImageToString(string imageString )
+		public static Image DeserializeImageToString( string imageString )
 		{
 			byte[] array = Convert.FromBase64String(imageString);
 			Image image = Image.FromStream(new MemoryStream(array));
@@ -56,11 +59,37 @@ namespace dulyojuke
 		static extern int SHGetKnownFolderPath( [MarshalAs( UnmanagedType.LPStruct )] Guid rfid, uint dwFlags, IntPtr hToken, out string pszPath );
 		#endregion
 
-		public static string GetImageTempFolder()
+		public static string GetImageTempFolder( )
 		{
 			var p = Path.Combine( Directory.GetCurrentDirectory( ), "temp" );
 			if ( !Directory.Exists( p ) ) Directory.CreateDirectory( p );
 			return p;
+		}
+
+		public static BitmapImage BitmapToImageSource( Image bitmap )
+		{
+			using ( MemoryStream memory = new MemoryStream( ) )
+			{
+				bitmap.Save( memory, System.Drawing.Imaging.ImageFormat.Bmp );
+				memory.Position = 0;
+				BitmapImage bitmapimage = new BitmapImage();
+				bitmapimage.BeginInit( );
+				bitmapimage.StreamSource = memory;
+				bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+				bitmapimage.EndInit( );
+
+				return bitmapimage;
+			}
+		}
+
+		public static Image ImageSourceToBitmap( ImageSource image )
+		{
+			MemoryStream ms = new MemoryStream();
+			var encoder = new BmpBitmapEncoder();
+			encoder.Frames.Add( BitmapFrame.Create( image as BitmapSource ) );
+			encoder.Save( ms );
+			ms.Flush( );
+			return System.Drawing.Image.FromStream( ms );
 		}
 	}
 }

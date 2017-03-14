@@ -23,7 +23,6 @@ namespace dulyojuke.Windows
 		public DoneForm( )
 		{
 			InitializeComponent( );
-
 		}
 
 		private TagNode CreateTagNode( string title, string artist, string albumname, System.Drawing.Image albumart )
