@@ -88,7 +88,8 @@ namespace dulyojuke.Windows
 		Dictionary<string, string> PageInterface.getData( )
 		{
 			var data = new Dictionary<string, string>();
-			data.Add( "AlbumArt", Utility.SerializeImageToString( AlbumArt ) );
+			if ( AlbumArt != null )
+				data.Add( "AlbumArt", Utility.SerializeImageToString( AlbumArt ) );
 			return data;
 		}
 
@@ -106,14 +107,14 @@ namespace dulyojuke.Windows
 		private void Button_Albumart_FromCapture_Click( object sender, RoutedEventArgs e )
 		{
 			var capture = CaptureAlbumArt( );
-            if (capture != null)
+			if ( capture != null )
 			{
 				System.Windows.MessageBox.Show( "잘못된 이미지입니다" );
 				return;
 			}
 
 			var filename = "t"+DateTime.Now.Ticks;
-			capture.Save( filename);
+			capture.Save( filename );
 			AlbumArt = new Bitmap( filename );
 			if ( AlbumArt == null )
 			{
