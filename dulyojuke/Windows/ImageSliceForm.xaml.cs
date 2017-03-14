@@ -29,7 +29,7 @@ namespace dulyojuke.Windows
 			throw new NotImplementedException( );
 		}
 
-		void PageInterface.setContentChangeEvent( RoutedEventHandler toPrevEvent, RoutedEventHandler toNextEvent )
+		void PageInterface.setContentChangeEvent( SceneSwitchAdapter @event )
 		{
 			throw new NotImplementedException( );
 		}

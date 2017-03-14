@@ -57,9 +57,9 @@ namespace dulyojuke.Windows
 			} );
 		}
 
-		void PageInterface.setContentChangeEvent( RoutedEventHandler toPrevEvent, RoutedEventHandler toNextEvent )
+		void PageInterface.setContentChangeEvent( SceneSwitchAdapter @event )
 		{
-			this.Button_Next.Click += toNextEvent;
+			@event.AttachEventHandlers( null, null, null, Button_Next);
 		}
 
 		void PageInterface.setData( Dictionary<string, string> data )

@@ -8,7 +8,7 @@ namespace dulyojuke.Windows
 {
 	interface PageInterface
 	{
-		void setContentChangeEvent( RoutedEventHandler toPrevEvent, RoutedEventHandler toNextEvent );
+		void setContentChangeEvent( SceneSwitchAdapter @event );
 		void setData( Dictionary<string, string> data );
 		Dictionary<string, string> getData( );
 	}

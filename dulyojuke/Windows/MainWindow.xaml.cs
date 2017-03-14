@@ -39,27 +39,31 @@ namespace dulyojuke.Windows
 		public void MakeSomeNoooooooooooise( )
 		{
 			ContentIndex = 0;
-
+			
 			Contents = new UserControl[]{
+
 				new URLForm( ),
 				new TagForm( ),
 				new AlbumartForm( ),
 				// new ImageSliceForm( ),
-				new DoneForm( )
+				new DoneForm( ),
+				new SettingForm( )
+
 	 		 };
 
 			ContentData.Clear( );
 
+			var eventAdapter = new SceneSwitchAdapter(Previousbutton_Click, Nextbutton_Click, Settingsbutton_Click, Homebutton_Click);
 			foreach ( PageInterface content in Contents )
 			{
-				content.setContentChangeEvent( Prevbuttons_Click, Nextbuttons_click );
+				content.setContentChangeEvent( eventAdapter );
 			}
 		}
 
 		/*
-		 * 장면 공통 뒤로가기 버튼 클릭 이벤트
+		 * 뒤로가기 버튼 클릭 이벤트
 		 */
-		private void Prevbuttons_Click( object sender, RoutedEventArgs e )
+		private void Previousbutton_Click( object sender, RoutedEventArgs e )
 		{
 			if ( ContentIndex > 0 )
 			{
@@ -71,9 +75,9 @@ namespace dulyojuke.Windows
 		}
 
 		/*
-		 * 장면 공통 다음으로 버튼 클릭 이벤트
+		 * 다음으로 버튼 클릭 이벤트
 		 */
-		private void Nextbuttons_click( object sender, RoutedEventArgs e )
+		private void Nextbutton_Click( object sender, RoutedEventArgs e )
 		{
 			if ( ContentIndex < Contents.Length - 1 )
 			{
@@ -81,12 +85,29 @@ namespace dulyojuke.Windows
 				this.Content = Contents[++ContentIndex].Content;
 				ProvideContentData( );
 			}
-			else
-			{
-				this.Content = null;
-				MakeSomeNoooooooooooise( );
-				this.Content = Contents[ContentIndex].Content;
-			}
+		}
+
+		/*
+		 * 설정 버튼 클릭 이벤트
+		 */
+		private void Settingsbutton_Click( object sender, RoutedEventArgs e )
+		{
+			AttachContentData( );
+			ContentIndex = 4;
+			this.Content = Contents[ContentIndex].Content;
+			ProvideContentData( );
+		}
+
+		/*
+		 * 메인가기 버튼 클릭 이벤트
+		 */
+		private void Homebutton_Click( object sender, RoutedEventArgs e )
+		{
+			AttachContentData( );
+			this.Content = null;
+			MakeSomeNoooooooooooise( );
+			this.Content = Contents[ContentIndex].Content;
+			ProvideContentData( );
 		}
 
 		/*
@@ -136,9 +157,17 @@ namespace dulyojuke.Windows
 				if ( ContentData.ContainsKey( "AlbumArt" ) )
 					data.Add( "AlbumArt", ContentData["AlbumArt"] );
 			}
+			if ( Contents[ContentIndex] is SettingForm )
+			{
+
+			}
 
 			( ( PageInterface ) Contents[ContentIndex] ).setData( data );
 		}
 
+		private void Window_Closing( object sender, System.ComponentModel.CancelEventArgs e )
+		{
+			SharedPreference.Instance.Save( );
+		}
 	}
 }

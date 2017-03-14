@@ -91,6 +91,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\PageInterface.cs" />
+    <Compile Include="Windows\SceneSwitchAdapter.cs" />
+    <Compile Include="Windows\SettingForm.xaml.cs">
+      <DependentUpon>SettingForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\Stasisfield.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -137,6 +141,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Windows\SettingForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\URLForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -181,6 +189,9 @@
     <Resource Include="Resources\icon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Gear.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="youtube-dl.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -23,10 +23,9 @@ namespace dulyojuke.Windows
 			InitializeComponent( );
 		}
 
-		void PageInterface.setContentChangeEvent( RoutedEventHandler toPrevEvent, RoutedEventHandler toNextEvent )
+		void PageInterface.setContentChangeEvent( SceneSwitchAdapter @event )
 		{
-			this.Button_Prev.Click += toPrevEvent;
-			this.Button_Next.Click += toNextEvent;
+			@event.AttachEventHandlers( Button_Prev, Button_Next, null, null );
 		}
 
 		void PageInterface.setData( Dictionary<string, string> data )

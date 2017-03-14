@@ -20,11 +20,6 @@ namespace dulyojuke.Windows
 			InitializeComponent( );
 		}
 
-		void PageInterface.setContentChangeEvent( RoutedEventHandler toPrevEvent, RoutedEventHandler toNextEvent )
-		{
-			this.Button_Next.Click += toNextEvent;
-		}
-
 		void PageInterface.setData( Dictionary<string, string> data )
 		{
 			
@@ -35,6 +30,16 @@ namespace dulyojuke.Windows
 			var data = new Dictionary<string, string>();
 			data.Add( "VideoUrl", this.Textbox_URL.Text );
 			return data;
+		}
+
+		private void Button_Settings_Click( object sender, RoutedEventArgs e )
+		{
+
+		}
+
+		void PageInterface.setContentChangeEvent( SceneSwitchAdapter @event )
+		{
+			@event.AttachEventHandlers( null, Button_Next, Button_Settings, null );
 		}
 	}
 }

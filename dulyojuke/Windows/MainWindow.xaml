@@ -7,5 +7,5 @@
         ResizeMode="NoResize"
         mc:Ignorable="d"
         Icon="../Resources/icon.ico"
-        Title="들려줄게" Height="300" Width="550">
+        Title="들려줄게" Height="300" Width="550" Closing="Window_Closing">
 </Window>

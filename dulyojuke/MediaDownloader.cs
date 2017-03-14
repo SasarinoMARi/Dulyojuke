@@ -22,7 +22,7 @@ namespace dulyojuke
 			Process downloader = new Process();
 			downloader.StartInfo.FileName = "youtube-dl.exe";
 			downloader.StartInfo.Arguments = string.Format("-f bestaudio/worstvideo \"{0}\" -o \"{1}\" --no-playlist", url, videoName );
-			downloader.StartInfo.RedirectStandardOutput = true;
+			//downloader.StartInfo.RedirectStandardOutput = true;
 			downloader.StartInfo.UseShellExecute = false;
 			downloader.StartInfo.CreateNoWindow = true;
 			downloader.EnableRaisingEvents = true;
@@ -43,7 +43,7 @@ namespace dulyojuke
 			Process downloader = new Process();
 			downloader.StartInfo.FileName = "youtube-dl.exe";
 			downloader.StartInfo.Arguments = string.Format( "{0} -o \"{1}\" {2}", url, videoName, account );
-			downloader.StartInfo.RedirectStandardOutput = true;
+			//downloader.StartInfo.RedirectStandardOutput = true;
 			downloader.StartInfo.UseShellExecute = false;
 			downloader.StartInfo.CreateNoWindow = true;
 			downloader.EnableRaisingEvents = true;
