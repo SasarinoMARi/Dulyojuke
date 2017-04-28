@@ -45,7 +45,7 @@ namespace dulyojuke.Windows
 				new URLForm( ),
 				new TagForm( ),
 				new AlbumartForm( ),
-				new ImageSliceForm( ),
+				//new ImageSliceForm( ),
 				new DoneForm( ),
 				new SettingForm( )
 
@@ -95,7 +95,7 @@ namespace dulyojuke.Windows
 		private void Settingsbutton_Click( object sender, RoutedEventArgs e )
 		{
 			AttachContentData( );
-			ContentIndex = 5;
+			ContentIndex = 4;
 			this.Content = Contents[ContentIndex].Content;
 			ProvideContentData( );
 		}
