@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dulyojuke"
+        xmlns:res="clr-namespace:dulyojuke.Resources"
         mc:Ignorable="d" Height="300" Width="550">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -11,34 +12,41 @@
                 <ResourceDictionary Source="../Resources/Colors.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <Image x:Key="Gear" Source="../Resources/Gear.png"/>
+            <SolidColorBrush x:Key="TransparentWhite" Color="#ffffff" Opacity="0.8" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid Margin="0,0,0,0">
-        <Grid Margin="0,0,0,50">
-            <TextBox x:Name="Textbox_URL"  TextWrapping="Wrap" Grid.Column="1" Grid.Row="1" Height="40" Width="500" FontSize="20" Padding="5, 0, 5, 0">
-                <TextBox.Style>
-                    <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
-                        <Style.Resources>
-                            <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
-                                <VisualBrush.Visual>
-                                    <Label Content="영상 주소를 입력하세요." Foreground="LightGray" FontSize="20" Padding="5, 0, 5, 0"/>
-                                </VisualBrush.Visual>
-                            </VisualBrush>
-                        </Style.Resources>
-                        <Style.Triggers>
-                            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
-                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
-                            </Trigger>
-                            <Trigger Property="Text" Value="{x:Null}">
-                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
-                            </Trigger>
-                            <Trigger Property="IsKeyboardFocused" Value="True">
-                                <Setter Property="Background" Value="White" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
+        <Grid Margin="0,0,0,50" x:Name="gPanel" >
+            <Grid Margin="0,0,0,0" Background="{StaticResource TransparentWhite}">
+            </Grid>
+            <res:LoadingWait Visibility="Hidden" x:Name="Progress"/>
+            <StackPanel Margin="0,0,0,0"  Width="500" VerticalAlignment="Center">
+                <TextBox x:Name="Textbox_URL"  TextWrapping="Wrap" Height="38" FontSize="20" Margin="10, 10, 10, 10" TextChanged="Textbox_URL_TextChanged" KeyDown="Textbox_URL_KeyDown" >
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                            <Style.Resources>
+                                <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                    <VisualBrush.Visual>
+                                        <Label Content="영상 주소를 입력하세요." Foreground="LightGray" FontSize="20" Padding="5, 0, 5, 0"/>
+                                    </VisualBrush.Visual>
+                                </VisualBrush>
+                            </Style.Resources>
+                            <Style.Triggers>
+                                <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                    <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                </Trigger>
+                                <Trigger Property="Text" Value="{x:Null}">
+                                    <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter Property="Background" Value="White" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <Label x:Name="Label_UrlTitle" Visibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" />
+            </StackPanel>
             <Button x:Name="Button_Settings" HorizontalAlignment="Right" VerticalAlignment="Top" Width="35" Height="35" Margin="0, 10, 10, 0" Content="{StaticResource Gear}" Click="Button_Settings_Click" Padding="5"/>
         </Grid>
         <Grid Height="50" Margin="0,150,0,0" VerticalAlignment="Bottom" Background="{StaticResource DownloadBarBackground}" >

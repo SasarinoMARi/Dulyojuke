@@ -41,5 +41,17 @@ namespace dulyojuke.Windows
 			data.Add( "AlbumName", this.Textbox_Tag_AlbumName.Text );
 			return data;
 		}
+
+		private void textboxKeydown(object sender, KeyEventArgs e)
+		{
+			if (e.Key == Key.Enter)
+			{
+				this.Button_Next.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+			}
+			if (e.Key == Key.Escape)
+			{
+				this.Button_Prev.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));
+			}
+		}
 	}
 }

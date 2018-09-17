@@ -24,6 +24,46 @@ namespace dulyojuke.Windows
 		{
 			InitializeComponent( );
 			this.Textbox_DownloadPath.Text = SharedPreference.Instance.DownloadPath;
+
+			foreach (var item in ProgressManager.Instance.Progresses)
+			{
+				Log.Text += getLog(item);
+			}
+		}
+
+		private string getLog(ProgressInfo item)
+		{
+			string reason = string.Empty;
+			switch (item.task.Status)
+			{
+				case System.Threading.Tasks.TaskStatus.Created:
+					reason = "생성";
+					break;
+				case System.Threading.Tasks.TaskStatus.WaitingForActivation:
+					reason = "대기";
+					break;
+				case System.Threading.Tasks.TaskStatus.WaitingToRun:
+					reason = "대기";
+					break;
+				case System.Threading.Tasks.TaskStatus.Running:
+					reason = "진행";
+					break;
+				case System.Threading.Tasks.TaskStatus.WaitingForChildrenToComplete:
+					reason = "진행";
+					break;
+				case System.Threading.Tasks.TaskStatus.RanToCompletion:
+					reason = "완료";
+					break;
+				case System.Threading.Tasks.TaskStatus.Canceled:
+					reason = "취소";
+					break;
+				case System.Threading.Tasks.TaskStatus.Faulted:
+					reason = "실패";
+					break;
+				default:
+					break;
+			}
+			return item.tag.Title + " / 상태 : " + reason + "\n";
 		}
 
 		private void Button_DownloadPathFinder_Click( object sender, RoutedEventArgs e )

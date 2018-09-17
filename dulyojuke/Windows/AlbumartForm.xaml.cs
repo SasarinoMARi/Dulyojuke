@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 
 namespace dulyojuke.Windows
 {
@@ -17,160 +20,176 @@ namespace dulyojuke.Windows
 		string VideoUrl;
 		private System.Drawing.Image AlbumArt;
 
-		public AlbumartForm( )
+		public AlbumartForm()
 		{
-			InitializeComponent( );
+			InitializeComponent();
 		}
 
-		private System.Drawing.Image OpenAlbumArt( )
+		private System.Drawing.Image OpenAlbumArt()
 		{
 			OpenFileDialog openFile = new OpenFileDialog();
 			openFile.DefaultExt = "jpg";
 			openFile.Filter = "Images Files(*.jpg; *.jpeg; *.gif; *.bmp; *.png)|*.jpg;*.jpeg;*.gif;*.bmp;*.png";
-			openFile.ShowDialog( );
-			if ( openFile.FileNames.Length > 0 )
+			openFile.ShowDialog();
+			if (openFile.FileNames.Length > 0)
 			{
 				// 우선은 맨 앞의 것만 선택되도록
-				foreach ( string filename in openFile.FileNames )
+				foreach (string filename in openFile.FileNames)
 				{
-					return new Bitmap( filename );
+					return new Bitmap(filename);
 				}
 			}
 			return null;
 		}
 
-		private System.Drawing.Image CaptureAlbumArt( )
+		private System.Drawing.Image CaptureAlbumArt()
 		{
 			System.Drawing.Image capture = null;
-			var stasisForm = new Stasisfield( );
-			stasisForm.ShowDialog( );
+			var stasisForm = new Stasisfield();
+			stasisForm.ShowDialog();
 			capture = stasisForm.CropedImage;
 			return capture;
 		}
 
-		private System.Drawing.Image DownloadAlbumArt( string imageurl )
+		private System.Drawing.Image DownloadAlbumArt(string imageurl)
 		{
-			if ( imageurl.StartsWith( "http://" ) || imageurl.StartsWith( "https://" ) )
+			if (imageurl.StartsWith("http://") || imageurl.StartsWith("https://"))
 			{
 				try
 				{
 					System.Net.WebRequest request = System.Net.WebRequest.Create(imageurl);
 					System.Net.WebResponse response = request.GetResponse();
 					Stream responseStream = response.GetResponseStream();
-					return new Bitmap( responseStream );
+					return new Bitmap(responseStream);
 				}
 				catch { }
 			}
 			return null;
 		}
 
-		private System.Drawing.Image GetThumbnail( )
+
+		void PageInterface.setContentChangeEvent(SceneSwitchAdapter @event)
 		{
-			var path = Path.Combine(Utility.GetImageTempFolder(), DateTime.Now.Ticks.ToString() );
-
-			Process downloader = new Process();
-			downloader.StartInfo.FileName = "youtube-dl.exe";
-			downloader.StartInfo.Arguments = string.Format( "\"{0}\" --write-thumbnail -o \"{1}\"", VideoUrl, path );
-			downloader.StartInfo.UseShellExecute = false;
-			downloader.StartInfo.CreateNoWindow = true;
-			downloader.EnableRaisingEvents = true;
-
-			downloader.Start( );
-			downloader.WaitForExit( );
-
-			if ( File.Exists( path ) )
-			{
-				File.Delete( path );
-
-				// 미친 소리 같지만 사실입니다.
-				if ( File.Exists( path + ".jpg" ) )
-					return new Bitmap( path + ".jpg" );
-				if ( File.Exists( path + ".png" ) )
-					return new Bitmap( path + ".png" );
-				if ( File.Exists( path + ".gif" ) )
-					return new Bitmap( path + ".gif" );
-				if ( File.Exists( path + ".jpeg" ) )
-					return new Bitmap( path + ".jpeg" );
-				else return null;
-			}
-			else
-			{
-				return null;
-			}
+			@event.AttachEventHandlers(Button_Prev, Button_Next, null, null);
 		}
 
-		void PageInterface.setContentChangeEvent( SceneSwitchAdapter @event )
-		{
-			@event.AttachEventHandlers( Button_Prev, Button_Next, null, null );
-		}
-
-		void PageInterface.setData( Dictionary<string, string> data )
+		void PageInterface.setData(Dictionary<string, string> data)
 		{
 			this.VideoUrl = data["VideoUrl"];
 		}
 
-		Dictionary<string, string> PageInterface.getData( )
+		Dictionary<string, string> PageInterface.getData()
 		{
 			var data = new Dictionary<string, string>();
-			if ( AlbumArt != null )
-				data.Add( "AlbumArt", Utility.SerializeImageToString( AlbumArt ) );
+			if (AlbumArt != null)
+				data.Add("AlbumArt", Utility.SerializeImageToString(AlbumArt));
 			return data;
 		}
 
-		private void Button_Albumart_FromImage_Click( object sender, RoutedEventArgs e )
+		private void Button_Albumart_FromImage_Click(object sender, RoutedEventArgs e)
 		{
-			AlbumArt = OpenAlbumArt( );
-			if ( AlbumArt == null )
+			AlbumArt = OpenAlbumArt();
+			if (AlbumArt == null)
 			{
-				System.Windows.MessageBox.Show( "잘못된 이미지입니다" );
-				return;
+				System.Windows.MessageBox.Show("잘못된 이미지입니다");
 			}
-			this.Button_Next.RaiseEvent( new RoutedEventArgs( System.Windows.Controls.Button.ClickEvent ) );
+			setAlbumArt2Control(AlbumArt);
+			//this.Button_Next.RaiseEvent( new RoutedEventArgs( System.Windows.Controls.Button.ClickEvent ) );
 		}
 
-		private void Button_Albumart_FromCapture_Click( object sender, RoutedEventArgs e )
+		private void Button_Albumart_FromCapture_Click(object sender, RoutedEventArgs e)
 		{
-			var capture = CaptureAlbumArt( );
-			if ( capture == null )
+			var capture = CaptureAlbumArt();
+			if (capture == null)
 			{
-				System.Windows.MessageBox.Show( "잘못된 이미지입니다" );
-				return;
+				System.Windows.MessageBox.Show("잘못된 이미지입니다");
 			}
 
 			var filename = Path.Combine(Utility.GetImageTempFolder(), DateTime.Now.Ticks.ToString());
-			capture.Save( filename );
-			AlbumArt = new Bitmap( filename );
-			if ( AlbumArt == null )
+			capture.Save(filename);
+			AlbumArt = new Bitmap(filename);
+			if (AlbumArt == null)
 			{
-				System.Windows.MessageBox.Show( "잘못된 이미지입니다" );
-				return;
+				System.Windows.MessageBox.Show("잘못된 이미지입니다");
 			}
-			this.Button_Next.RaiseEvent( new RoutedEventArgs( System.Windows.Controls.Button.ClickEvent ) );
+			setAlbumArt2Control(AlbumArt);
+			//this.Button_Next.RaiseEvent( new RoutedEventArgs( System.Windows.Controls.Button.ClickEvent ) );
 		}
 
-		private void Button_Albumart_FromWeb_Click( object sender, RoutedEventArgs e )
+		private void Button_Albumart_FromWeb_Click(object sender, RoutedEventArgs e)
 		{
 			var form = new InputBox("다운로드할 이미지 주소를 입력하세요.");
-			form.ShowDialog( );
-			if ( form.IsCancled ) return;
-			AlbumArt = DownloadAlbumArt( form.Text );
-			if ( AlbumArt == null )
+			form.ShowDialog();
+			if (form.IsCancled) return;
+			Task.Factory.StartNew(delegate
 			{
-				System.Windows.MessageBox.Show( "잘못된 이미지입니다" );
-				return;
-			}
-			this.Button_Next.RaiseEvent( new RoutedEventArgs( System.Windows.Controls.Button.ClickEvent ) );
+				Progress.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate
+				{
+					this.Label_NoImage.Visibility = Visibility.Collapsed;
+					Progress.Visibility = Visibility.Visible;
+				}));
+				AlbumArt = DownloadAlbumArt(form.Text);
+				Progress.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate
+				{
+					Progress.Visibility = Visibility.Collapsed;
+					if (AlbumArt == null)
+					{
+						this.Label_NoImage.Visibility = Visibility.Visible;
+						System.Windows.MessageBox.Show("잘못된 이미지입니다");
+					}
+					setAlbumArt2Control(AlbumArt);
+				}));
+			});
+			//this.Button_Next.RaiseEvent( new RoutedEventArgs( System.Windows.Controls.Button.ClickEvent ) );
 		}
 
-		private void Button_Albumart_FromThumbnail_Click( object sender, RoutedEventArgs e )
+		private void Button_Albumart_FromThumbnail_Click(object sender, RoutedEventArgs e)
 		{
-			AlbumArt = GetThumbnail( );
-			if ( AlbumArt == null )
+			Task.Factory.StartNew(delegate
 			{
-				System.Windows.MessageBox.Show( "잘못된 이미지입니다" );
+				Progress.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate
+				{
+					this.Label_NoImage.Visibility = Visibility.Collapsed;
+					Progress.Visibility = Visibility.Visible;
+				}));
+				AlbumArt = MediaDownloader.GetThumbnail(VideoUrl);
+				Progress.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate
+				{
+					Progress.Visibility = Visibility.Collapsed;
+					if (AlbumArt == null)
+					{
+						this.Label_NoImage.Visibility = Visibility.Visible;
+						System.Windows.MessageBox.Show("잘못된 이미지입니다");
+					}
+					setAlbumArt2Control(AlbumArt);
+				}));
+			});
+
+			//this.Button_Next.RaiseEvent( new RoutedEventArgs( System.Windows.Controls.Button.ClickEvent ) );
+		}
+
+		private void setAlbumArt2Control(System.Drawing.Image art)
+		{
+			if (art == null)
+			{
+				this.Image_Thumbnail.Source = null;
+				this.Label_NoImage.Visibility = Visibility.Visible;
 				return;
 			}
-			this.Button_Next.RaiseEvent( new RoutedEventArgs( System.Windows.Controls.Button.ClickEvent ) );
+
+			var b = new Bitmap(art);
+			var bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(b.GetHbitmap(),
+										  IntPtr.Zero,
+										  Int32Rect.Empty,
+										  BitmapSizeOptions.FromEmptyOptions());
+			this.Image_Thumbnail.Source = bitmapSource;
+			this.Label_NoImage.Visibility = Visibility.Collapsed;
+		}
+
+		private void Button_Remove_Click(object sender, RoutedEventArgs e)
+		{
+			this.Image_Thumbnail.Source = null;
+			this.Label_NoImage.Visibility = Visibility.Visible;
 		}
 	}
 }

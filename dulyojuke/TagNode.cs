@@ -2,7 +2,7 @@
 
 namespace dulyojuke
 {
-	class TagNode
+	public class TagNode
 	{
 		public string Title;
 		public string[] Artists;

@@ -15,10 +15,11 @@ namespace dulyojuke.Windows
 {
 	public partial class MainWindow : Window
 	{
+
 		/*
-		 * 응용 프로그램 내의 장면 전환은 모두 이곳에서 처리합니다. 이 때, 장면이란 PageInterface 인터페이스를 상속받은 클래스를 지칭합니다.
+		 * 응용 프로그램 내의 장면 전환은 모두 이곳에서 처리합니다. 장면이란 PageInterface 인터페이스를 상속받은 클래스를 의미합니다.
 		 * setContentChangeEvent() 함수를 사용해 각각의 장면에 이 클래스의 뒤로가기, 다음으로 버튼 이벤트를 전달합니다.
-		 * 또, 화면 전환이 이루어 질 때 setData() 및 getData() 함수를 통해 각 장면의 초기화에 필요한 데이터나 반환받을 데이터를 관리합니다.
+		 * 화면 전환이 이루어 질 때 setData() 및 getData() 함수를 통해 각 장면의 초기화에 필요한 데이터와 반환받을 데이터를 관리합니다.
 		 */
 
 		public MainWindow( )
@@ -27,6 +28,7 @@ namespace dulyojuke.Windows
 			TagAssister.Initialize( );
 			MakeSomeNoooooooooooise( );
 			this.Content = Contents[ContentIndex].Content;
+
 		}
 
 		UserControl[] Contents;
@@ -47,7 +49,7 @@ namespace dulyojuke.Windows
 				new AlbumartForm( ),
 				//new ImageSliceForm( ),
 				new DoneForm( ),
-				new SettingForm( )
+				new SettingForm( ),
 
 	 		 };
 
@@ -177,6 +179,7 @@ namespace dulyojuke.Windows
 
 		private void Window_Closing( object sender, System.ComponentModel.CancelEventArgs e )
 		{
+			Utility.cleanupTempFolder();
 			SharedPreference.Instance.Save( );
 		}
 	}

@@ -1,9 +1,10 @@
-﻿<UserControl x:Class="dulyojuke.Windows.AlbumartForm"
+﻿<UserControl xmlns:Resources="clr-namespace:dulyojuke.Resources"  x:Class="dulyojuke.Windows.AlbumartForm"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:dulyojuke.Windows"
+        xmlns:res="cir-namespace:dulyojuke.Resources"
         mc:Ignorable="d" Height="300" Width="550">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -14,20 +15,25 @@
     </UserControl.Resources>
     <Grid>
         <Grid Margin="0,0,0,50">
-            <Grid Margin="50, 50,50,50">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Button x:Name="Button_Albumart_FromImage" Content="이미지" Margin="0, 0, 0, 0" Grid.Column="0" Click="Button_Albumart_FromImage_Click"/>
-                <Button x:Name="Button_Albumart_FromCapture" Content="캡처" Margin="0, 0, 0, 0" Grid.Column="2" Click="Button_Albumart_FromCapture_Click"/>
-                <Button x:Name="Button_Albumart_FromWeb" Content="이미지url" Margin="0, 0, 0, 0" Grid.Column="4" Click="Button_Albumart_FromWeb_Click"/>
-                <Button x:Name="Button_Albumart_FromThumbnail" Content="영상 섬네일" Margin="0, 0, 0, 0" Grid.Column="6" Click="Button_Albumart_FromThumbnail_Click"/>
+            <Grid >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <StackPanel VerticalAlignment="Center" >
+                        <Border BorderThickness="0.5"  Width="150" Height="150"  BorderBrush="#FF000000">
+                            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <Image Name="Image_Thumbnail" Stretch="Fill"/>
+                                <Label Content="지정 없음"  x:Name="Label_NoImage" Foreground="LightGray"/>
+                                <Resources:LoadingWait Visibility="Collapsed" x:Name="Progress"/>
+                            </Grid>
+                        </Border>
+                        <Button x:Name="Button_Remove" Content="제거" Margin="5" Width="50" Height="25"  Click="Button_Remove_Click"/>
+                    </StackPanel>
+                    <StackPanel VerticalAlignment="Center" Width="150" >
+                        <Button x:Name="Button_Albumart_FromImage" Content="이미지 찾기" Margin="5" Width="120" Height="30" Click="Button_Albumart_FromImage_Click" />
+                        <Button x:Name="Button_Albumart_FromCapture" Content="화면 캡처" Margin="5"  Width="120" Height="30"  Click="Button_Albumart_FromCapture_Click"/>
+                        <Button x:Name="Button_Albumart_FromWeb" Content="이미지url 입력" Margin="5"  Width="120" Height="30"  Click="Button_Albumart_FromWeb_Click"/>
+                        <Button x:Name="Button_Albumart_FromThumbnail" Content="영상 섬네일 사용" Margin="5" Width="120" Height="30"  Click="Button_Albumart_FromThumbnail_Click"/>
+                    </StackPanel>
+                </StackPanel>
             </Grid>
         </Grid>
         <Grid Height="50" Margin="0,150,0,0" VerticalAlignment="Bottom" Background="{StaticResource DownloadBarBackground}" >

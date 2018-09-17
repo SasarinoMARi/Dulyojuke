@@ -30,30 +30,33 @@ namespace dulyojuke.Windows
 			return new TagNode( ) { Title = title, Artists = new string[] { artist }, Album = albumname, AlbumArt = new System.Drawing.Image[] { albumart } };
 		}
 
-		private void StartDownload( string videoUrl, TagNode tag )
+		private ProgressInfo StartDownload(string videoUrl, TagNode tag)
 		{
 			videoUrl = videoUrl.Trim();
 			var downlaodPath = SharedPreference.Instance.DownloadPath;
 
-			Task.Factory.StartNew( delegate
-			{
-				try
-				{
-					MediaDownloader.DownloadVideo( videoUrl, downlaodPath, delegate ( string videoPath )
-					{
-						var audioPath = MediaConverter.ConvertVideo( videoPath );
-						TagAssister.ApplyTag( audioPath, tag );
-					} );
-				}
-				catch ( Exception exception )
-				{
-					LogAssister.Output( exception.ToString( ) );
-				}
-				finally
-				{
+			var t = Task.Factory.StartNew(delegate
+		   {
+			   try
+			   {
+				   MediaDownloader.DownloadVideo(videoUrl, downlaodPath, delegate (string videoPath)
+				   {
+					   var audioPath = MediaConverter.ConvertVideo(videoPath);
+					   TagAssister.ApplyTag(audioPath, tag);
+				   });
+			   }
+			   catch (Exception exception)
+			   {
+				   LogAssister.Output(exception.ToString());
+			   }
+			   finally
+			   {
 
-				}
-			} );
+			   }
+		   });
+
+			var o = new ProgressInfo(t, tag);
+			return o;
 		}
 
 		void PageInterface.setContentChangeEvent( SceneSwitchAdapter @event )
@@ -74,7 +77,8 @@ namespace dulyojuke.Windows
 				AlbumArt = Utility.DeserializeImageToString( albumArtString );
 			}
 
-			StartDownload( VideoUrl, CreateTagNode( Title, Artist, AlbumName, AlbumArt ) );
+			var p = StartDownload( VideoUrl, CreateTagNode( Title, Artist, AlbumName, AlbumArt ) );
+			ProgressManager.Instance.AddProgress(p);
 		}
 
 		Dictionary<string, string> PageInterface.getData( )

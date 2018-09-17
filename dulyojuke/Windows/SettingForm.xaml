@@ -14,8 +14,9 @@
     </UserControl.Resources>
     <Grid>
         <Grid Margin="0,0,0,50">
-            <Grid Margin="20, 30, 20, 30">
+            <Grid Margin="20, 20, 20, 20">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -23,14 +24,11 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="40"/>
                 </Grid.ColumnDefinitions>
-
-                <Label FontSize="15" Height="30" Content="다운로드 경로" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Left" Margin="10"/>
-
-                <TextBox x:Name="Textbox_DownloadPath" FontSize="16" Height="30" Grid.Row="0" Grid.Column="1" Margin="10" />
-
+                <Label FontSize="15" Height="30" Content="다운로드 경로" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Left" Margin="5"/>
+                <TextBox x:Name="Textbox_DownloadPath" FontSize="16" Height="30" Grid.Row="0" Grid.Column="1" Margin="5" />
                 <Button x:Name="Button_DownloadPathFinder" FontSize="16" Content="..." Grid.Row="0" Grid.Column="2" Height="30" Click="Button_DownloadPathFinder_Click"/>
-                
             </Grid>
+            <TextBlock Name="Log"  HorizontalAlignment="Left"  Margin="5,80,5,10" Width="540"  />
         </Grid>
         <Grid Height="50" Margin="0,150,0,0" VerticalAlignment="Bottom" Background="{StaticResource DownloadBarBackground}" >
             <Button x:Name="Button_Next" HorizontalAlignment="Right" Content="확인" Width="85" Height="35" Margin="0, 0, 20, 0"/>

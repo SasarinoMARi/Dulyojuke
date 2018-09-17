@@ -10,29 +10,52 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/Colors.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <Style  x:Key="UndefinedTextbox" TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                <Style.Resources>
+                    <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                        <VisualBrush.Visual>
+                            <Label Content="지정 없음" Foreground="LightGray" FontSize="20" Padding="5, 0, 5, 0"/>
+                        </VisualBrush.Visual>
+                    </VisualBrush>
+                </Style.Resources>
+                <Style.Triggers>
+                    <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                        <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                    </Trigger>
+                    <Trigger Property="Text" Value="{x:Null}">
+                        <Setter Property="Background" Value="{StaticResource CueBannerBrush}" />
+                    </Trigger>
+                    <Trigger Property="IsKeyboardFocused" Value="True">
+                        <Setter Property="Background" Value="White" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
         <Grid Margin="0,0,0,50">
-            <Grid Margin="50, 30, 50, 30">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <StackPanel  Width="500" Height="200">
+                <Label Content="MP3 파일의 태그를 설정해 주세요."  FontSize="18" Margin="0, 0, 0, 10"/>
+                <Grid Height="150">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <Label FontSize="16" Height="30" Content="제목" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Left" Margin="10"/>
-                <Label FontSize="16" Height="30" Content="아티스트" Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Left" Margin="10"/>
-                <Label FontSize="16" Height="30" Content="앨범명" Grid.Row="2" Grid.Column="0"  HorizontalAlignment="Left" Margin="10"/>
+                    <Label FontSize="15" Height="30" Content="제목" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Right" Margin="5"/>
+                    <Label FontSize="15" Height="30" Content="아티스트" Grid.Row="1" Grid.Column="0"  HorizontalAlignment="Right" Margin="5"/>
+                    <Label FontSize="15" Height="30" Content="앨범명" Grid.Row="2" Grid.Column="0"  HorizontalAlignment="Right" Margin="5"/>
 
-                <TextBox x:Name="Textbox_Tag_Title" FontSize="16" Height="30" Grid.Row="0" Grid.Column="1" Margin="10"/>
-                <TextBox x:Name="Textbox_Tag_Artist" FontSize="16" Height="30" Grid.Row="1" Grid.Column="1" Margin="10"/>
-                <TextBox x:Name="Textbox_Tag_AlbumName" FontSize="16" Height="30" Grid.Row="2" Grid.Column="1" Margin="10" />
-            </Grid>
+                    <TextBox x:Name="Textbox_Tag_Title" FontSize="16" Height="30" Grid.Row="0" Grid.Column="1" Margin="5" Style="{StaticResource UndefinedTextbox}" KeyDown="textboxKeydown"/>
+                    <TextBox x:Name="Textbox_Tag_Artist" FontSize="16" Height="30" Grid.Row="1" Grid.Column="1" Margin="5"  Style="{StaticResource UndefinedTextbox}" KeyDown="textboxKeydown"/>
+                    <TextBox x:Name="Textbox_Tag_AlbumName" FontSize="16" Height="30" Grid.Row="2" Grid.Column="1" Margin="5" Style="{StaticResource UndefinedTextbox}"  KeyDown="textboxKeydown"/>
+                </Grid>
+            </StackPanel>
         </Grid>
         <Grid Height="50" Margin="0,150,0,0" VerticalAlignment="Bottom" Background="{StaticResource DownloadBarBackground}" >
             <Button x:Name="Button_Prev" HorizontalAlignment="Left" Content="이전으로" Width="85" Height="35" Margin="20, 0, 0, 0"/>
