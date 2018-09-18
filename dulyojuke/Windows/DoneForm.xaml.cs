@@ -32,14 +32,14 @@ namespace dulyojuke.Windows
 
 		private ProgressInfo StartDownload(string videoUrl, TagNode tag)
 		{
-			videoUrl = videoUrl.Trim();
+			var u = videoUrl.Trim();
 			var downlaodPath = SharedPreference.Instance.DownloadPath;
 
 			var t = Task.Factory.StartNew(delegate
 		   {
 			   try
 			   {
-				   MediaDownloader.DownloadVideo(videoUrl, downlaodPath, delegate (string videoPath)
+				   MediaDownloader.DownloadVideo(u, downlaodPath, delegate (string videoPath)
 				   {
 					   var audioPath = MediaConverter.ConvertVideo(videoPath);
 					   TagAssister.ApplyTag(audioPath, tag);
@@ -55,7 +55,7 @@ namespace dulyojuke.Windows
 			   }
 		   });
 
-			var o = new ProgressInfo(t, tag);
+			var o = new ProgressInfo(t, tag, videoUrl);
 			return o;
 		}
 

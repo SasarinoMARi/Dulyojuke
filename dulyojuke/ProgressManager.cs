@@ -39,9 +39,9 @@ namespace dulyojuke
 			}
 		}
 
-		public void AddProgress(Task task, TagNode tag)
+		public void AddProgress(Task task, TagNode tag, string url)
 		{
-			Progresses.Add(new ProgressInfo(task, tag));
+			Progresses.Add(new ProgressInfo(task, tag, url));
 		}
 
 		internal void AddProgress(ProgressInfo p)
@@ -54,11 +54,13 @@ namespace dulyojuke
 	{
 		public Task task;
 		public TagNode tag;
+		internal string url;
 
-		public ProgressInfo(Task task, TagNode tag)
+		public ProgressInfo(Task task, TagNode tag, string url)
 		{
 			this.task = task;
 			this.tag = tag;
+			this.url = url;
 		}
 	}
 }

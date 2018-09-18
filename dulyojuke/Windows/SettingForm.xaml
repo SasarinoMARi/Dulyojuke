@@ -14,21 +14,27 @@
     </UserControl.Resources>
     <Grid>
         <Grid Margin="0,0,0,50">
-            <Grid Margin="20, 20, 20, 20">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="125"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="40"/>
-                </Grid.ColumnDefinitions>
-                <Label FontSize="15" Height="30" Content="다운로드 경로" Grid.Row="0" Grid.Column="0"  HorizontalAlignment="Left" Margin="5"/>
-                <TextBox x:Name="Textbox_DownloadPath" FontSize="16" Height="30" Grid.Row="0" Grid.Column="1" Margin="5" />
-                <Button x:Name="Button_DownloadPathFinder" FontSize="16" Content="..." Grid.Row="0" Grid.Column="2" Height="30" Click="Button_DownloadPathFinder_Click"/>
-            </Grid>
-            <TextBlock Name="Log"  HorizontalAlignment="Left"  Margin="5,80,5,10" Width="540"  />
+            <StackPanel Margin="20, 20, 20, 20" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Height="40" HorizontalAlignment="Center"  >
+                    <Label FontSize="15" Content="다운로드 경로" Margin="5"/>
+                    <TextBox x:Name="Textbox_DownloadPath" FontSize="16" Margin="5" Width="300"  />
+                    <Button x:Name="Button_DownloadPathFinder" Content="..."  FontSize="16" Margin="5"  Width="30" Click="Button_DownloadPathFinder_Click"/>
+                    <Button x:Name="Button_DownloadPathOpen" Content="열기"  FontSize="16" Margin="5"  Width="40" Click="Button_DownloadPathOpen_Click"/>
+                </StackPanel>
+                <ListView Margin="10" Name="Log" Height="150">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="영상 제목" Width="400" DisplayMemberBinding="{Binding Name}"  />
+                            <GridViewColumn Header="상태" Width="60" DisplayMemberBinding="{Binding Status}" />
+                        </GridView>
+                    </ListView.View>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+            </StackPanel>
         </Grid>
         <Grid Height="50" Margin="0,150,0,0" VerticalAlignment="Bottom" Background="{StaticResource DownloadBarBackground}" >
             <Button x:Name="Button_Next" HorizontalAlignment="Right" Content="확인" Width="85" Height="35" Margin="0, 0, 20, 0"/>

@@ -54,7 +54,6 @@ namespace dulyojuke.Windows
 							}
 						}));
 						var t = MediaDownloader.GetThumbnail(_url);
-						Pre_Downloader.Instance.AddPDS(_url, n, t);
 						Progress.Dispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(delegate
 						{
 							Progress.Visibility = Visibility.Hidden;

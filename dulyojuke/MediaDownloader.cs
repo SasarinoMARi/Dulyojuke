@@ -76,7 +76,9 @@ namespace dulyojuke
 			//if ( downloader.ExitCode != 0 ) throw new Exceptions.YoutubeDLException( );
 
 			var output = downloader.StandardOutput.ReadToEnd();
-			return Utility.MakeValidFileName(output.Trim( ));
+			var vfn = Utility.MakeValidFileName(output.Trim());
+			Pre_Downloader.Instance.AddPDSName(url, vfn);
+			return vfn;
 		}
 
 		internal static Bitmap GetThumbnail(string url)
@@ -96,25 +98,25 @@ namespace dulyojuke
 			downloader.Start();
 			downloader.WaitForExit();
 
+			Bitmap rtn = null;
 			if (File.Exists(path))
 			{
 				File.Delete(path);
 
 				// 미친 소리 같지만 사실입니다.
 				if (File.Exists(path + ".jpg"))
-					return new Bitmap(path + ".jpg");
+					rtn =new Bitmap(path + ".jpg");
 				if (File.Exists(path + ".png"))
-					return new Bitmap(path + ".png");
+					rtn = new Bitmap(path + ".png");
 				if (File.Exists(path + ".gif"))
-					return new Bitmap(path + ".gif");
+					rtn = new Bitmap(path + ".gif");
 				if (File.Exists(path + ".jpeg"))
-					return new Bitmap(path + ".jpeg");
-				else return null;
+					rtn = new Bitmap(path + ".jpeg");
+
 			}
-			else
-			{
-				return null;
-			}
+
+			Pre_Downloader.Instance.AddPDSBitmap(url, rtn);
+			return rtn;
 		}
 
 		internal static void DownloadVideo( string downloadUrl, string downlaodPath, Action<string> callback )
@@ -164,24 +166,51 @@ namespace dulyojuke
 
 		internal void AddPDS(string url, string name, Bitmap path)
 		{
-			removePDS(url);
-			var t = new Pre_DownloadState();
+			var t = getProgress(url);
 			t.url = url;
 			t.dougaName = name;
 			t.imagePath = path;
-			progresses.Add(t);
+			addProgress(t);
 		}
 
-		private void removePDS(string url)
+		internal void AddPDSName(string url, string name)
+		{
+			var t = getProgress(url);
+			t.url = url;
+			t.dougaName = name;
+			addProgress(t);
+		}
+
+		internal void AddPDSBitmap(string url, Bitmap map)
+		{
+			var t = getProgress(url);
+			t.url = url;
+			t.imagePath = map;
+			addProgress(t);
+		}
+
+		private Pre_DownloadState getProgress(string url)
 		{
 			foreach (var item in progresses)
 			{
 				if (item.url == url)
 				{
-					progresses.Remove(item);
-					return;
+					return item;
 				}
 			}
+			return new Pre_DownloadState();
+		}
+
+		private void addProgress(Pre_DownloadState progress) {
+			foreach (var item in progresses)
+			{
+				if (item.url == progress.url)
+				{
+					progresses.Remove(item);
+					break;
+				}
+			}
+			progresses.Add(progress);
 		}
 
 		internal Bitmap GetThumbnail(string url)
