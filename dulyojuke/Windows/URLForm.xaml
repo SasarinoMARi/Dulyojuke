@@ -11,7 +11,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/Colors.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <Image x:Key="Gear" Source="../Resources/Gear.png"/>
+            <Image  x:Key="Gear" Source="/dulyojuke;component/Resources/Gear.png" />
             <SolidColorBrush x:Key="TransparentWhite" Color="#ffffff" Opacity="0.8" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -47,7 +47,11 @@
                 </TextBox>
                 <Label x:Name="Label_UrlTitle" Visibility="Hidden" HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" />
             </StackPanel>
-            <Button x:Name="Button_Settings" HorizontalAlignment="Right" VerticalAlignment="Top" Width="35" Height="35" Margin="0, 10, 10, 0" Content="{StaticResource Gear}" Click="Button_Settings_Click" Padding="5"/>
+            <Button x:Name="Button_Settings" HorizontalAlignment="Right" VerticalAlignment="Top" Width="35" Height="35" Margin="0, 10, 10, 0" Content="{StaticResource Gear}" Click="Button_Settings_Click" Padding="5">
+                <Button.Background>
+                    <ImageBrush/>
+                </Button.Background>
+            </Button>
         </Grid>
         <Grid Height="50" Margin="0,150,0,0" VerticalAlignment="Bottom" Background="{StaticResource DownloadBarBackground}" >
             <Button x:Name="Button_Next" HorizontalAlignment="Right" Content="다음으로" Width="85" Height="35" Margin="0, 0, 20, 0"/>

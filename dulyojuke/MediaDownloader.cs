@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace dulyojuke
@@ -16,12 +17,17 @@ namespace dulyojuke
 			public class NotFoundOutputFileException : Exception { }
 		}
 
+        public static string GetDownloadClientPath()
+        {
+            return Path.Combine(Utility.getDataDirPath(), "Youtube-dl.exe");
+        }
+
 		private static void GetYoutueVideo( string url, string dir, Action<string> callback )
 		{
 			var videoName = Path.Combine(dir, GetTitle(url));
 
 			Process downloader = new Process();
-			downloader.StartInfo.FileName = "youtube-dl.exe";
+            downloader.StartInfo.FileName = GetDownloadClientPath();
 			downloader.StartInfo.Arguments = string.Format("-f bestaudio/worstvideo \"{0}\" -o \"{1}\" --no-playlist", url, videoName );
 			//downloader.StartInfo.RedirectStandardOutput = true;
 			downloader.StartInfo.UseShellExecute = false;
@@ -42,8 +48,8 @@ namespace dulyojuke
 			var videoName = Path.Combine(dir, GetTitle(url, account));
 
 			Process downloader = new Process();
-			downloader.StartInfo.FileName = "youtube-dl.exe";
-			downloader.StartInfo.Arguments = string.Format( "{0} -o \"{1}\" {2}", url, videoName, account );
+			downloader.StartInfo.FileName = GetDownloadClientPath();
+            downloader.StartInfo.Arguments = string.Format( "{0} -o \"{1}\" {2}", url, videoName, account );
 			//downloader.StartInfo.RedirectStandardOutput = true;
 			downloader.StartInfo.UseShellExecute = false;
 			downloader.StartInfo.CreateNoWindow = true;
@@ -63,8 +69,8 @@ namespace dulyojuke
 			if (pt != null) return pt;
 
 			Process downloader = new Process();
-			downloader.StartInfo.FileName = "youtube-dl.exe";
-			downloader.StartInfo.Arguments = string.Format("-e {0} \"{1}\" --no-playlist", url, option );
+			downloader.StartInfo.FileName = GetDownloadClientPath();
+            downloader.StartInfo.Arguments = string.Format("-e {0} \"{1}\" --no-playlist", url, option );
 			downloader.StartInfo.RedirectStandardOutput = true;
 			downloader.StartInfo.UseShellExecute = false;
 			downloader.StartInfo.CreateNoWindow = true;
@@ -89,8 +95,8 @@ namespace dulyojuke
 			var path = Path.Combine(Utility.GetImageTempFolder(), DateTime.Now.Ticks.ToString());
 
 			Process downloader = new Process();
-			downloader.StartInfo.FileName = "youtube-dl.exe";
-			downloader.StartInfo.Arguments = string.Format("\"{0}\" --write-thumbnail -o \"{1}\"", url, path);
+			downloader.StartInfo.FileName = GetDownloadClientPath();
+            downloader.StartInfo.Arguments = string.Format("\"{0}\" --write-thumbnail -o \"{1}\"", url, path);
 			downloader.StartInfo.UseShellExecute = false;
 			downloader.StartInfo.CreateNoWindow = true;
 			downloader.EnableRaisingEvents = true;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using IniParser;
 using IniParser.Model;
@@ -10,7 +11,6 @@ namespace dulyojuke
 {
 	class SharedPreference
 	{
-		private const string Filepath = "settings.ini";
 		private static SharedPreference instance;
 		public static SharedPreference Instance { get { if ( instance == null ) instance = new SharedPreference( ); return instance; } }
 
@@ -18,13 +18,18 @@ namespace dulyojuke
 		{
 			Load( );
 		}
+        
+        public static string getSettingFilePath()
+        {
+            return Path.Combine(Utility.getDataDirPath(), "settings.ini");
+        }
 
-		public void Load()
+        public void Load()
 		{
 			var parser = new FileIniDataParser();
-			if ( File.Exists( Filepath ) )
+			if ( File.Exists(getSettingFilePath()) )
 			{
-				IniData data = parser.ReadFile(Filepath);
+				IniData data = parser.ReadFile(getSettingFilePath());
 				if ( data.Sections.ContainsSection( "pragma" ) )
 				{
 					if ( data["pragma"].ContainsKey( "DownloadPath" ) ) DownloadPath = data["pragma"]["DownloadPath"];
@@ -53,7 +58,7 @@ namespace dulyojuke
 			data.Sections.AddSection( "nicovideo" );
 			data["nicovideo"].AddKey( "NicoVideoUsername", NicoVideoUsername );
 			data["nicovideo"].AddKey( "NicoVideoPassword", NicoVideoPassword );
-			parser.WriteFile( Filepath, data );
+			parser.WriteFile(getSettingFilePath(), data );
 		}
 
 		public string NicoVideoUsername { get; set; } = string.Empty;

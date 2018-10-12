@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
@@ -57,11 +58,21 @@ namespace dulyojuke
 		}
 		[DllImport("shell32.dll", CharSet = CharSet.Unicode)]
 		static extern int SHGetKnownFolderPath([MarshalAs(UnmanagedType.LPStruct)] Guid rfid, uint dwFlags, IntPtr hToken, out string pszPath);
-		#endregion
+        #endregion
 
-		public static string GetImageTempFolder()
+        public static string getDataDirPath()
+        {
+            string dir = Path.Combine(
+               Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+               Assembly.GetEntryAssembly().GetName().Name
+           );
+            if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
+            return dir;
+        }
+
+        public static string GetImageTempFolder()
 		{
-			var p = Path.Combine(Directory.GetCurrentDirectory(), "temp");
+			var p = Path.Combine(getDataDirPath(), "image_thumbnails");
 			if (!Directory.Exists(p)) Directory.CreateDirectory(p);
 			return p;
 		}
