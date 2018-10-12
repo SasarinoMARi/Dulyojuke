@@ -41,6 +41,7 @@ Temporary Items
 *.suo
 *.opensdf
 *.user
+.vs/
 
 Uncommit/
 
