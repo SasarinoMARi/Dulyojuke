@@ -4,61 +4,59 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using IniParser;
-using IniParser.Model;
+using System.Web.Script.Serialization;
 
 namespace dulyojuke
 {
 	class SharedPreference
 	{
 		private static SharedPreference instance;
-		public static SharedPreference Instance { get { if ( instance == null ) instance = new SharedPreference( ); return instance; } }
+		public static SharedPreference Instance { get { if (instance == null) instance = new SharedPreference(); return instance; } }
 
-		private SharedPreference( )
+		private SharedPreference()
 		{
-			Load( );
+			Load();
 		}
-        
-        public static string getSettingFilePath()
-        {
-            return Path.Combine(Utility.getDataDirPath(), "settings.ini");
-        }
 
-        public void Load()
+		public static string getSettingFilePath()
 		{
-			var parser = new FileIniDataParser();
-			if ( File.Exists(getSettingFilePath()) )
+			return Path.Combine(Utility.getDataDirPath(), "settings");
+		}
+
+		public void Load()
+		{
+			try
 			{
-				IniData data = parser.ReadFile(getSettingFilePath());
-				if ( data.Sections.ContainsSection( "pragma" ) )
-				{
-					if ( data["pragma"].ContainsKey( "DownloadPath" ) ) DownloadPath = data["pragma"]["DownloadPath"];
-				}
-				else
-				{
-					DownloadPath = Utility.GetDefaultDownloadFolder( );
-				}
-				if ( data.Sections.ContainsSection( "nicovideo" ) )
-				{
-					if ( data["nicovideo"].ContainsKey( "NicoVideoUsername" ) ) NicoVideoUsername = data["nicovideo"]["NicoVideoUsername"];
-					if ( data["nicovideo"].ContainsKey( "NicoVideoPassword" ) ) NicoVideoPassword = data["nicovideo"]["NicoVideoPassword"];
-				}
+				Dictionary<string, object> list = null;
+				var json = File.ReadAllText(getSettingFilePath());
+				list = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(json);
+				DownloadPath = list["fileDownloadPath"].ToString();
+				Dictionary<string, object> nico = (Dictionary<string, object>)list["nicodouga"];
+				NicoVideoUsername = nico["username"].ToString();
+				NicoVideoUsername = nico["password"].ToString();
 			}
-			else {
-				DownloadPath = Utility.GetDefaultDownloadFolder( );
+			catch (IOException e)
+			{
+				Console.WriteLine(e);
+
+				DownloadPath = Utility.GetDefaultDownloadFolder();
 			}
 		}
 
 		public void Save()
 		{
-			var parser = new FileIniDataParser();
-			IniData data = new IniData();
-			data.Sections.AddSection( "pragma" );
-			data["pragma"].AddKey("DownloadPath", DownloadPath);
-			data.Sections.AddSection( "nicovideo" );
-			data["nicovideo"].AddKey( "NicoVideoUsername", NicoVideoUsername );
-			data["nicovideo"].AddKey( "NicoVideoPassword", NicoVideoPassword );
-			parser.WriteFile(getSettingFilePath(), data );
+			NicoVideoPassword = "TestTextTest10@!_4";
+
+			var json = new Dictionary<string, object>();
+			json.Add("fileDownloadPath", DownloadPath);
+			var nico = new Dictionary<string, string>();
+			nico.Add("username", NicoVideoUsername);
+			nico.Add("password", NicoVideoPassword);
+			json.Add("nicodouga", nico);
+
+			JavaScriptSerializer js = new JavaScriptSerializer();
+			string serializedString = js.Serialize(json);
+			File.WriteAllText(getSettingFilePath(), serializedString);
 		}
 
 		public string NicoVideoUsername { get; set; } = string.Empty;

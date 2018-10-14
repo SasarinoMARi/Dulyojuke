@@ -47,8 +47,8 @@ namespace dulyojuke.Properties {
         }
         
         /// <summary>
-        ///   이 강력한 형식의 리소스 클래스를 사용하여 모든 리소스 조회에 대해 현재 스레드의 CurrentUICulture 속성을
-        ///   재정의합니다.
+        ///   이 강력한 형식의 리소스 클래스를 사용하여 모든 리소스 조회에 대한 현재 스레드의 CurrentUICulture
+        ///   속성을 재정의합니다.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
         internal static global::System.Globalization.CultureInfo Culture {
@@ -99,39 +99,6 @@ namespace dulyojuke.Properties {
             get {
                 object obj = ResourceManager.GetObject("Gear", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   System.Byte[] 형식의 지역화된 리소스를 찾습니다.
-        /// </summary>
-        internal static byte[] INIFileParser {
-            get {
-                object obj = ResourceManager.GetObject("INIFileParser", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   &lt;?xml version=&quot;1.0&quot;?&gt;
-        ///&lt;doc&gt;
-        ///    &lt;assembly&gt;
-        ///        &lt;name&gt;INIFileParser&lt;/name&gt;
-        ///    &lt;/assembly&gt;
-        ///    &lt;members&gt;
-        ///        &lt;member name=&quot;M:IniParser.Helpers.Assert.StringHasNoBlankSpaces(System.String)&quot;&gt;
-        ///            &lt;summary&gt;
-        ///            Asserts that a strings has no blank spaces.
-        ///            &lt;/summary&gt;
-        ///            &lt;param name=&quot;s&quot;&gt;The string to be checked.&lt;/param&gt;
-        ///            &lt;returns&gt;&lt;/returns&gt;&lt;/member&gt;
-        ///        &lt;member name=&quot;T:IniParser.FileIniDataParser&quot;&gt;
-        ///            &lt;summary&gt;
-        ///            Represents an INI data [나머지 문자열은 잘림]&quot;;과(와) 유사한 지역화된 문자열을 찾습니다.
-        /// </summary>
-        internal static string INIFileParser1 {
-            get {
-                return ResourceManager.GetString("INIFileParser1", resourceCulture);
             }
         }
         
