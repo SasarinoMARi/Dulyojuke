@@ -138,7 +138,8 @@ namespace dulyojuke.Windows
 
 			if ( Contents[ContentIndex] is URLForm )
 			{
-
+				if (ContentData.ContainsKey("VideoUrl"))
+					data.Add("VideoUrl", ContentData["VideoUrl"]);
 			}
 			if ( Contents[ContentIndex] is TagForm )
 			{

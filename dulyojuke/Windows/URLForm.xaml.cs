@@ -30,6 +30,7 @@ namespace dulyojuke.Windows
 
 		void PageInterface.setData(Dictionary<string, string> data)
 		{
+			_url = Textbox_URL.Text = data["VideoUrl"];
 			bgw_running = true;
 			bgw = Task.Factory.StartNew(delegate
 			{
@@ -76,7 +77,7 @@ namespace dulyojuke.Windows
 		{
 			bgw_running = false;
 			var data = new Dictionary<string, string>();
-			data.Add("VideoUrl", this.Textbox_URL.Text);
+			data.Add("VideoUrl", Utility.TrimUrl(this.Textbox_URL.Text));
 			return data;
 		}
 

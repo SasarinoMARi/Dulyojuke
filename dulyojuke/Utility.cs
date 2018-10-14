@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Web;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -129,6 +130,26 @@ namespace dulyojuke
 
 				}
 			}
+		}
+
+		public static string TrimUrl(string url) {
+			if (url.Contains("list="))
+			{
+				url = RemoveQueryStringByKey(url, "list");
+			}
+
+			return url;
+		}
+		public static string RemoveQueryStringByKey(string url, string key)
+		{
+			var uri = new Uri(url);
+			var newQueryString = HttpUtility.ParseQueryString(uri.Query);
+			newQueryString.Remove(key);
+			string pagePathWithoutQueryString = uri.GetLeftPart(UriPartial.Path);
+
+			return newQueryString.Count > 0
+				? String.Format("{0}?{1}", pagePathWithoutQueryString, newQueryString)
+				: pagePathWithoutQueryString;
 		}
 	}
 }

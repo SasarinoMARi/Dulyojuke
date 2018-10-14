@@ -45,8 +45,6 @@ namespace dulyojuke
 
 		public void Save()
 		{
-			NicoVideoPassword = "TestTextTest10@!_4";
-
 			var json = new Dictionary<string, object>();
 			json.Add("fileDownloadPath", DownloadPath);
 			var nico = new Dictionary<string, string>();
