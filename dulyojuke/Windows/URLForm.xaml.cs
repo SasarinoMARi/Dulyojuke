@@ -30,7 +30,8 @@ namespace dulyojuke.Windows
 
 		void PageInterface.setData(Dictionary<string, string> data)
 		{
-			_url = Textbox_URL.Text = data["VideoUrl"];
+            if(data.ContainsKey("VideoUrl"))
+			    _url = Textbox_URL.Text = data["VideoUrl"];
 			bgw_running = true;
 			bgw = Task.Factory.StartNew(delegate
 			{
