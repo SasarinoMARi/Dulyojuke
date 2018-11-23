@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -22,24 +22,25 @@ namespace dulyojuke
             return Path.Combine(Utility.getDataDirPath(), "Youtube-dl.exe");
         }
 
-		private static void GetYoutueVideo( string url, string dir, Action<string> callback )
-		{
-			var videoName = Path.Combine(dir, GetTitle(url));
+        private static void GetYoutueVideo(string url, string dir, Action<string> callback)
+        {
+            var videoName = Path.Combine(dir, GetTitle(url));
 
-			Process downloader = new Process();
+            Process downloader = new Process();
             downloader.StartInfo.FileName = GetDownloadClientPath();
-			downloader.StartInfo.Arguments = string.Format("-f bestaudio/worstvideo \"{0}\" -o \"{1}\" --no-playlist", url, videoName );
-			//downloader.StartInfo.RedirectStandardOutput = true;
-			downloader.StartInfo.UseShellExecute = false;
-			downloader.StartInfo.CreateNoWindow = true;
-			downloader.EnableRaisingEvents = true;
+            downloader.StartInfo.Arguments = string.Format("-f bestaudio/worstvideo \"{0}\" -o \"{1}\" --no-playlist", url, videoName);
+            //downloader.StartInfo.RedirectStandardOutput = true;
+            downloader.StartInfo.UseShellExecute = false;
+            downloader.StartInfo.CreateNoWindow = true;
+            downloader.EnableRaisingEvents = true;
 
-			downloader.Start( );
-			downloader.WaitForExit( );
+            downloader.Start();
+            downloader.WaitForExit();
 
-			//if ( downloader.ExitCode != 0 ) throw new Exceptions.YoutubeDLException( );
+            //if ( downloader.ExitCode != 0 ) throw new Exceptions.YoutubeDLException( );
 
-			callback( videoName );
+            if (File.Exists(videoName)) callback(videoName);
+            else GetYoutueVideo(url, dir, callback);
 		}
 
 		private static void GetNicoVideo( string url, string dir, Action<string> callback, string username, string password )
@@ -70,7 +71,7 @@ namespace dulyojuke
 
 			Process downloader = new Process();
 			downloader.StartInfo.FileName = GetDownloadClientPath();
-            downloader.StartInfo.Arguments = string.Format("-e {0} \"{1}\" --no-playlist", url, option );
+            downloader.StartInfo.Arguments = string.Format("-e {0} {1} --no-playlist", url, option );
 			downloader.StartInfo.RedirectStandardOutput = true;
 			downloader.StartInfo.UseShellExecute = false;
 			downloader.StartInfo.CreateNoWindow = true;
@@ -82,6 +83,7 @@ namespace dulyojuke
 			//if ( downloader.ExitCode != 0 ) throw new Exceptions.YoutubeDLException( );
 
 			var output = downloader.StandardOutput.ReadToEnd();
+            if (string.IsNullOrEmpty(output)) return GetTitle(url, option);
 			var vfn = Utility.MakeValidFileName(output.Trim());
 			Pre_Downloader.Instance.AddPDSName(url, vfn);
 			return vfn;
@@ -104,25 +106,29 @@ namespace dulyojuke
 			downloader.Start();
 			downloader.WaitForExit();
 
-			Bitmap rtn = null;
-			if (File.Exists(path))
-			{
-				File.Delete(path);
+            if (File.Exists(path))
+            {
+                Bitmap rtn = null;
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
 
-				// 미친 소리 같지만 사실입니다.
-				if (File.Exists(path + ".jpg"))
-					rtn =new Bitmap(path + ".jpg");
-				if (File.Exists(path + ".png"))
-					rtn = new Bitmap(path + ".png");
-				if (File.Exists(path + ".gif"))
-					rtn = new Bitmap(path + ".gif");
-				if (File.Exists(path + ".jpeg"))
-					rtn = new Bitmap(path + ".jpeg");
+                    // 미친 소리 같지만 사실입니다.
+                    if (File.Exists(path + ".jpg"))
+                        rtn = new Bitmap(path + ".jpg");
+                    if (File.Exists(path + ".png"))
+                        rtn = new Bitmap(path + ".png");
+                    if (File.Exists(path + ".gif"))
+                        rtn = new Bitmap(path + ".gif");
+                    if (File.Exists(path + ".jpeg"))
+                        rtn = new Bitmap(path + ".jpeg");
 
-			}
+                }
 
-			Pre_Downloader.Instance.AddPDSBitmap(url, rtn);
-			return rtn;
+                Pre_Downloader.Instance.AddPDSBitmap(url, rtn);
+                return rtn;
+            }
+            else return GetThumbnail(url);
 		}
 
 		internal static void DownloadVideo( string downloadUrl, string downlaodPath, Action<string> callback )
